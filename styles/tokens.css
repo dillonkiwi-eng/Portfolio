@@ -1,0 +1,162 @@
+/**
+ * Design tokens — primitive tier
+ * Placeholder values; refine once layout is in place.
+ */
+
+:root {
+  /* ——— Colour primitives ——— */
+  --color-white: #ffffff;
+  --color-black: #0a0a0a;
+
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  --color-accent-500: #6366f1;
+
+  /* ——— Typography primitives ——— */
+  --font-family-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-family-display: var(--font-family-sans);
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 2.5rem;
+  --font-size-5xl: 3.25rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --line-height-tight: 1.15;
+  --line-height-snug: 1.35;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.06em;
+
+  /* ——— Spacing scale ——— */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* ——— Motion ——— */
+  --duration-instant: 120ms;
+  --duration-fast: 220ms;
+  --duration-normal: 420ms;
+  --duration-slow: 680ms;
+
+  /* Primary editorial ease (augen-style) */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-quart: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ——— Layout ——— */
+  --nav-height: 3.5rem;
+  --content-max-width: 72rem;
+  --page-padding-x: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-padding-x: var(--space-10);
+  }
+}
+
+/**
+ * Semantic tier — references primitives
+ */
+:root {
+  --text-primary: var(--color-neutral-950);
+  --text-secondary: var(--color-neutral-600);
+  --text-muted: var(--color-neutral-400);
+  --text-inverse: var(--color-white);
+
+  --surface-page: var(--color-neutral-50);
+  --surface-elevated: var(--color-white);
+  --surface-glass: color-mix(in srgb, var(--color-white) 72%, transparent);
+  --surface-glass-border: color-mix(in srgb, var(--color-neutral-950) 8%, transparent);
+
+  --border-subtle: color-mix(in srgb, var(--color-neutral-950) 10%, transparent);
+  --border-strong: color-mix(in srgb, var(--color-neutral-950) 18%, transparent);
+
+  --focus-ring: var(--color-accent-500);
+
+  --font-body: var(--font-family-sans);
+  --font-display: var(--font-family-display);
+
+  --transition-ui: var(--duration-fast) var(--ease-out-expo);
+  --transition-reveal: var(--duration-normal) var(--ease-out-expo);
+  --transition-page: var(--duration-slow) var(--ease-in-out-smooth);
+
+  /* Portfolio UI surfaces */
+  --ui-page: #f4f4f4;
+  --ui-elevated: #ffffff;
+  --ui-surface: #f4f4f4;
+  --ui-surface-subtle: #f8f8f8;
+  --ui-surface-hover: #ebebeb;
+  --ui-surface-active: #e5e5e5;
+  --ui-surface-selected: #ebebeb;
+  --ui-text: #262626;
+  --ui-text-secondary: #746a6a;
+  --ui-text-muted: rgba(70, 70, 70, 0.7);
+  --ui-border: rgba(0, 0, 0, 0.05);
+  --ui-nav-icon: #3c4043;
+  --ui-backdrop: rgba(244, 244, 244, 0.25);
+  --ui-hover-overlay: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --text-primary: var(--color-neutral-50);
+  --text-secondary: var(--color-neutral-400);
+  --text-muted: var(--color-neutral-500);
+  --text-inverse: var(--color-neutral-950);
+
+  --surface-page: var(--color-neutral-950);
+  --surface-elevated: var(--color-neutral-900);
+  --surface-glass: color-mix(in srgb, var(--color-neutral-900) 78%, transparent);
+  --surface-glass-border: color-mix(in srgb, var(--color-white) 10%, transparent);
+
+  --border-subtle: color-mix(in srgb, var(--color-white) 10%, transparent);
+  --border-strong: color-mix(in srgb, var(--color-white) 18%, transparent);
+
+  --ui-page: #0f0f0f;
+  --ui-elevated: #1a1a1a;
+  --ui-surface: #222222;
+  --ui-surface-subtle: #1e1e1e;
+  --ui-surface-hover: #2a2a2a;
+  --ui-surface-active: #333333;
+  --ui-surface-selected: #2a2a2a;
+  --ui-text: #f0f0f0;
+  --ui-text-secondary: #a8a0a0;
+  --ui-text-muted: rgba(200, 200, 200, 0.65);
+  --ui-border: rgba(255, 255, 255, 0.08);
+  --ui-nav-icon: #e8e8e8;
+  --ui-backdrop: rgba(0, 0, 0, 0.45);
+  --ui-hover-overlay: rgba(255, 255, 255, 0.08);
+}
