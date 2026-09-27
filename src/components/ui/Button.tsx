@@ -49,6 +49,14 @@ export function Button({
   );
 
   if (href) {
+    if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+      return (
+        <a href={href} onClick={onClick} className={classes}>
+          {content}
+        </a>
+      );
+    }
+
     return (
       <Link href={href} onClick={onClick} className={classes}>
         {content}

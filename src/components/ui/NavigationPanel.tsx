@@ -18,6 +18,7 @@ export interface NavigationPanelProps {
 }
 
 const NAV_ALBUM_COVER = "/assets/ui/album-cover.png";
+const CONTACT_EMAIL = "dillonrco@gmail.com";
 
 const PANEL_TRANSITION = { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const };
 const PANEL_SURFACE =
@@ -242,6 +243,19 @@ function NavPanelContent({
     }
   };
 
+  const handleContactClick: React.MouseEventHandler<HTMLAnchorElement | HTMLButtonElement> = (
+    event,
+  ) => {
+    if (onContactClick) {
+      event.preventDefault();
+      onClose();
+      onContactClick();
+      return;
+    }
+
+    onClose();
+  };
+
   return (
     <div className="flex flex-col gap-4 px-5 pb-5">
       <div className="flex gap-4">
@@ -273,7 +287,12 @@ function NavPanelContent({
           />
         </div>
         <div className="min-w-[240px] flex-1">
-          <Button label="Contact" size="nav" onClick={onContactClick} />
+          <Button
+            label="Contact"
+            size="nav"
+            href={onContactClick ? undefined : `mailto:${CONTACT_EMAIL}`}
+            onClick={handleContactClick}
+          />
         </div>
       </div>
 
