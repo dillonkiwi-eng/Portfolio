@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HeroEye } from "@/components/home/hero-eye";
+import { useLenisInstance } from "@/components/smooth-scroll-provider";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Button,
@@ -167,6 +168,32 @@ function CaseDetailPanel({ project }: { project: Project }) {
 export function HomePage() {
   const [activeTab, setActiveTab] = useState<ProjectCategory>("work");
   const [selectedId, setSelectedId] = useState(projects[0]?.id ?? "google");
+  const caseStudyPanelRef = useRef<HTMLDivElement>(null);
+  const skipInitialCaseStudyScroll = useRef(true);
+  const lenis = useLenisInstance();
+
+  const scrollToCaseStudyTop = useCallback(() => {
+    const panel = caseStudyPanelRef.current;
+    if (!panel) return;
+
+    if (lenis) {
+      lenis.scrollTo(panel, { offset: -32, duration: 1.1 });
+      return;
+    }
+
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [lenis]);
+
+  useEffect(() => {
+    if (skipInitialCaseStudyScroll.current) {
+      skipInitialCaseStudyScroll.current = false;
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      scrollToCaseStudyTop();
+    });
+  }, [selectedId, scrollToCaseStudyTop]);
 
   const filteredProjects = useMemo(
     () => allProjects.filter((project) => project.category === activeTab),
@@ -244,7 +271,7 @@ export function HomePage() {
             </div>
           </aside>
 
-          <div className="min-w-0 pt-6 lg:pt-0">
+          <div ref={caseStudyPanelRef} className="min-w-0 scroll-mt-8 pt-6 lg:pt-0">
             <AnimatePresence mode="wait">
               {selectedProject ? (
                 <CaseDetailPanel key={selectedProject.id} project={selectedProject} />

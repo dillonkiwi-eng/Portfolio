@@ -8,6 +8,10 @@ import * as THREE from "three";
 import { useTheme } from "@/lib/theme-provider";
 
 const MODEL_PATH = "/assets/homepage/eye-icon.glb";
+/** Spatial frequency of the grain pattern (fbm input multiplier). */
+const NOISE_SCALE = 18;
+/** Surface grain strength; bump depth is NOISE_AMOUNT / 1000. */
+const NOISE_AMOUNT = 50;
 
 type SurfaceNoiseMaps = {
   roughnessMap: THREE.DataTexture;
@@ -60,7 +64,7 @@ function createSurfaceNoiseMaps(size = 512): SurfaceNoiseMaps {
       const index = y * size + x;
       const nx = x / size;
       const ny = y / size;
-      const grain = fbmNoise(nx * 18, ny * 18);
+      const grain = fbmNoise(nx * NOISE_SCALE, ny * NOISE_SCALE);
       const fine = fbmNoise(nx * 42 + 12.7, ny * 42 + 4.2);
       const combined = THREE.MathUtils.clamp(grain * 0.72 + fine * 0.28, 0, 1);
 
@@ -72,13 +76,11 @@ function createSurfaceNoiseMaps(size = 512): SurfaceNoiseMaps {
   const roughnessMap = new THREE.DataTexture(roughnessData, size, size, THREE.RedFormat);
   roughnessMap.wrapS = roughnessMap.wrapT = THREE.RepeatWrapping;
   roughnessMap.repeat.set(3.5, 3.5);
-  roughnessMap.anisotropy = 4;
   roughnessMap.needsUpdate = true;
 
   const bumpMap = new THREE.DataTexture(bumpData, size, size, THREE.RedFormat);
   bumpMap.wrapS = bumpMap.wrapT = THREE.RepeatWrapping;
   bumpMap.repeat.set(3.5, 3.5);
-  bumpMap.anisotropy = 4;
   bumpMap.needsUpdate = true;
 
   return { roughnessMap, bumpMap };
@@ -92,13 +94,14 @@ function getSurfaceNoiseMaps() {
 }
 
 function createChromeMaterial(envIntensity: number, noise: SurfaceNoiseMaps) {
-  return new THREE.MeshPhysicalMaterial({
+  const noiseStrength = NOISE_AMOUNT / 1000;
+  const material = new THREE.MeshPhysicalMaterial({
     color: new THREE.Color("#060606"),
     metalness: 1,
-    roughness: 0.22,
+    roughness: 0.18 + noiseStrength * 0.35,
     roughnessMap: noise.roughnessMap,
     bumpMap: noise.bumpMap,
-    bumpScale: 0.018,
+    bumpScale: noiseStrength,
     envMapIntensity: envIntensity,
     clearcoat: 0.85,
     clearcoatRoughness: 0.12,
@@ -107,6 +110,17 @@ function createChromeMaterial(envIntensity: number, noise: SurfaceNoiseMaps) {
     sheenRoughness: 0.45,
     sheenColor: new THREE.Color("#777777"),
   });
+  material.userData.heroChrome = true;
+  return material;
+}
+
+function disposeHeroChromeMaterial(material: THREE.Material | THREE.Material[]) {
+  const materials = Array.isArray(material) ? material : [material];
+  for (const entry of materials) {
+    if (entry.userData?.heroChrome) {
+      entry.dispose();
+    }
+  }
 }
 
 function EyeModel({ animate, envIntensity }: { animate: boolean; envIntensity: number }) {
@@ -120,11 +134,7 @@ function EyeModel({ animate, envIntensity }: { animate: boolean; envIntensity: n
     clone.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
 
-      const sourceMaterials = Array.isArray(child.material) ? child.material : [child.material];
-      for (const material of sourceMaterials) {
-        material.dispose();
-      }
-
+      disposeHeroChromeMaterial(child.material);
       child.material = createChromeMaterial(envIntensity, surfaceNoise);
       child.castShadow = true;
       child.receiveShadow = true;

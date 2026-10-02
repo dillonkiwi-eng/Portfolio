@@ -14,19 +14,23 @@ export function SiteFooter() {
         />
         <div className="flex flex-wrap items-center justify-center gap-2">
           <Link
-            href="mailto:hello@dillon.com"
+            href="mailto:dillonrco@gmail.com"
             className="rounded-full px-4 py-2 text-[16px] leading-[1.5] text-ui-text transition-colors hover:bg-[var(--ui-hover-overlay)]"
           >
-            hello@dillon.com
+            Say hello
           </Link>
           <Link
-            href="https://linkedin.com"
+            href="https://www.instagram.com/neuetone/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full px-4 py-2 text-[16px] leading-[1.5] text-ui-text transition-colors hover:bg-[var(--ui-hover-overlay)]"
           >
             IN
           </Link>
           <Link
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/dillonramesh"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full px-4 py-2 text-[16px] leading-[1.5] text-ui-text transition-colors hover:bg-[var(--ui-hover-overlay)]"
           >
             LI
